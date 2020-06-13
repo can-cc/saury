@@ -1,6 +1,6 @@
 package model
 
-type Ａlbum struct {
+type Album struct {
 	Name string
 	Uri string
 	Photos []string
