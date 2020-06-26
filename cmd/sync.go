@@ -1,11 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"github.com/fwchen/saury/model"
+	"github.com/fwchen/saury/repository"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
+	"sort"
+	"strconv"
 )
 
 const DefaultGalleries = "./galleries"
@@ -22,21 +25,35 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	appDb, err := repository.Connect("mongodb://localhost:27017", "saury")
+	if err != nil {
+		log.Fatal(err)
+	}
+	galleryRepo := repository.NewGalleryRepository(appDb)
+
+	//var albums []model.Album
 	for _, f := range entries {
 		if !f.IsDir() {
 			continue
 		}
-		fmt.Println(f.Name())
-		photos, err := ioutil.ReadDir(path.Join(galleriesDir, f.Name()))
+		var photos []string
+		album := model.Album{
+			Name:   "",
+			Uri:    "",
+		}
+		files, err := ioutil.ReadDir(path.Join(galleriesDir, f.Name()))
 		if err != nil {
 			log.Fatal(err)
 		}
-		for _, p := range photos {
+		for _, p := range files {
 			if p.IsDir() {
 				continue
 			}
-			fmt.Println(p.Name())
+			photos = append(photos, p.Name())
 		}
-
+		sort.Strings(photos)
+		album.Photos = photos
+		galleryRepo.Save(&album)
+		//albums = append(albums, album)
 	}
 }

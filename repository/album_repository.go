@@ -18,7 +18,7 @@ type GalleryRepository struct {
 	database *Database
 }
 
-func (g *GalleryRepository) save(album *model.Album) error {
+func (g *GalleryRepository) Save(album *model.Album) error {
 	_, err := g.database.MongoClient.Collection("album").InsertOne(context.Background(), album)
 	if err != nil {
 		return errors.Trace(err)
@@ -26,7 +26,7 @@ func (g *GalleryRepository) save(album *model.Album) error {
 	return nil
 }
 
-func (g *GalleryRepository) findByName(name string) (*model.Album, error) {
+func (g *GalleryRepository) FindByName(name string) (*model.Album, error) {
 	var album *model.Album
 	err := g.database.MongoClient.Collection("gallery").FindOne(context.Background(), bson.M{
 		"name": name,
@@ -37,7 +37,7 @@ func (g *GalleryRepository) findByName(name string) (*model.Album, error) {
 	return album, nil
 }
 
-func (g *GalleryRepository) findAll(limit, offset int64) ([]model.Album, error) {
+func (g *GalleryRepository) FindAll(limit, offset int64) ([]model.Album, error) {
 	cur, err :=  g.database.MongoClient.Collection("gallery").Find(context.Background(), bson.M{}, &options.FindOptions{
 		Limit: func(i int64) *int64 {return &i}(limit),
 		Skip: func(i int64) *int64 {return &i}(offset),
