@@ -9,6 +9,7 @@ import (
 	"path"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 const DefaultGalleries = "./galleries"
@@ -38,7 +39,7 @@ func main() {
 		}
 		var photos []string
 		album := model.Album{
-			Name:   "",
+			Name:   f.Name(),
 			Uri:    "",
 		}
 		files, err := ioutil.ReadDir(path.Join(galleriesDir, f.Name()))
@@ -51,7 +52,13 @@ func main() {
 			}
 			photos = append(photos, p.Name())
 		}
-		sort.Strings(photos)
+
+		sort.Slice(photos, func(i, j int) bool {
+			numA, _ := strconv.Atoi(strings.Split(photos[i], ".")[0])
+			numB, _ := strconv.Atoi(strings.Split(photos[j], ".")[0])
+			return numA < numB
+		})
+
 		album.Photos = photos
 		galleryRepo.Save(&album)
 		//albums = append(albums, album)
