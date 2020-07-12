@@ -28,7 +28,7 @@ func (g *GalleryRepository) Save(album *model.Album) error {
 
 func (g *GalleryRepository) FindByName(name string) (*model.Album, error) {
 	var album *model.Album
-	err := g.database.MongoClient.Collection("gallery").FindOne(context.Background(), bson.M{
+	err := g.database.MongoClient.Collection("album").FindOne(context.Background(), bson.M{
 		"name": name,
 	}).Decode(album)
 	if err != nil {
@@ -38,7 +38,7 @@ func (g *GalleryRepository) FindByName(name string) (*model.Album, error) {
 }
 
 func (g *GalleryRepository) FindAll(limit, offset int64) ([]model.Album, error) {
-	cur, err :=  g.database.MongoClient.Collection("gallery").Find(context.Background(), bson.M{}, &options.FindOptions{
+	cur, err :=  g.database.MongoClient.Collection("album").Find(context.Background(), bson.M{}, &options.FindOptions{
 		Limit: func(i int64) *int64 {return &i}(limit),
 		Skip: func(i int64) *int64 {return &i}(offset),
 	})

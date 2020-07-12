@@ -32,7 +32,8 @@ func main() {
 	}
 	galleryRepo := repository.NewGalleryRepository(appDb)
 
-	//var albums []model.Album
+	println("start sync galleries")
+	println("...")
 	for _, f := range entries {
 		if !f.IsDir() {
 			continue
@@ -61,6 +62,10 @@ func main() {
 
 		album.Photos = photos
 		galleryRepo.Save(&album)
+		println("save " + album.Name + " success")
 		//albums = append(albums, album)
 	}
+	println("========================")
+	println("sync galleries complete.")
+
 }
