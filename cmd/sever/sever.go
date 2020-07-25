@@ -1,19 +1,13 @@
 package main
 
 import (
-	"bytes"
+	"github.com/fwchen/saury/render"
 	"github.com/fwchen/saury/repository"
 	"github.com/labstack/echo/v4"
-	"html/template"
-	"log"
 	"net/http"
 )
 
 func main() {
-	tmp, err := template.ParseFiles("template/tmpl.html")
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
@@ -27,11 +21,7 @@ func main() {
 			return err
 		}
 
-		var tpl bytes.Buffer
-		if err := tmp.Execute(&tpl, galleries); err != nil {
-			log.Fatal(err)
-		}
-		htmlResponse := tpl.String()
+		htmlResponse := render.ParseFile(galleries)
 
 		return c.HTML(http.StatusOK, htmlResponse)
 	})

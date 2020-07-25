@@ -6,6 +6,8 @@
 </head>
 <body>
     <div>result:</div>
-    <p>{{.}}</p>
+    {{range .}}
+        {{.Name}}
+    {{end}}
 </body>
 </html>
