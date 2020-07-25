@@ -47,6 +47,13 @@
         height: 100%;
         padding: 16px;
     }
+    .imgs{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .img{
+        margin: 8px;
+    }
 </style>
 <body>
 <div class="header">
@@ -68,12 +75,15 @@
             {{range $i,$value := .}}
                 <li id="{{$value.Name}}">
                     <h4>> {{$value.Name}}</h4>
-                    <ul>
+                    <div class="imgs">
                         {{ range .Photos}}
-                            <img src="./galleries/{{$value.Name}}/{{.}}" alt="{{.}}">
-
+                            <div class="img">
+                                <img src="./galleries/{{$value.Name}}/{{.}}" height="200" alt="{{.}}">
+                                <br>
+                                <span>{{.}}</span>
+                            </div>
                         {{ end }}
-                    </ul>
+                    </div>
                 </li>
             {{ end }}
         </ul>
