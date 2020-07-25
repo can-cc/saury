@@ -38,9 +38,9 @@ func (g *GalleryRepository) FindByName(name string) (*model.Album, error) {
 }
 
 func (g *GalleryRepository) FindAll(limit, offset int64) ([]model.Album, error) {
-	cur, err :=  g.database.MongoClient.Collection("album").Find(context.Background(), bson.M{}, &options.FindOptions{
-		Limit: func(i int64) *int64 {return &i}(limit),
-		Skip: func(i int64) *int64 {return &i}(offset),
+	cur, err := g.database.MongoClient.Collection("album").Find(context.Background(), bson.M{}, &options.FindOptions{
+		Limit: func(i int64) *int64 { return &i }(limit),
+		Skip:  func(i int64) *int64 { return &i }(offset),
 	})
 	defer cur.Close(context.Background())
 	albums := make([]model.Album, 0)

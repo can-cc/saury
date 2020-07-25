@@ -15,7 +15,7 @@ import (
 const DefaultGalleries = "./galleries"
 
 func main() {
-	args:= os.Args
+	args := os.Args
 	var galleriesDir string
 	if len(args) < 2 {
 		galleriesDir = DefaultGalleries
@@ -40,10 +40,11 @@ func main() {
 		}
 		var photos []string
 		album := model.Album{
-			Name:   f.Name(),
-			Uri:    "",
+			Name: f.Name(),
+			Uri:  "",
 		}
 		files, err := ioutil.ReadDir(path.Join(galleriesDir, f.Name()))
+
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -61,6 +62,7 @@ func main() {
 		})
 
 		album.Photos = photos
+
 		galleryRepo.Save(&album)
 		println("save " + album.Name + " success")
 		//albums = append(albums, album)
