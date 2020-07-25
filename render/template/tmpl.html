@@ -65,12 +65,13 @@
 
     <div class="container">
         <ul>
-            {{range .}}
-                <li id="{{.Name}}">
-                    <h4>> {{.Name}}</h4>
+            {{range $i,$value := .}}
+                <li id="{{$value.Name}}">
+                    <h4>> {{$value.Name}}</h4>
                     <ul>
                         {{ range .Photos}}
-                            <img src="{{.}}" alt="{{.}}">
+                            <img src="./galleries/{{$value.Name}}/{{.}}" alt="{{.}}">
+
                         {{ end }}
                     </ul>
                 </li>

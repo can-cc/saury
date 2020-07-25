@@ -30,6 +30,8 @@ func main() {
 		return c.HTML(http.StatusOK, htmlResponse)
 	})
 
+	e.Static("/*", "")
+
 	e.Use(middleware.Logger())
 
 	e.Logger.Fatal(e.Start(":1324"))
