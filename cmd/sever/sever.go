@@ -4,6 +4,7 @@ import (
 	"github.com/fwchen/saury/render"
 	"github.com/fwchen/saury/repository"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"net/http"
 )
 
@@ -21,10 +22,15 @@ func main() {
 			return err
 		}
 
-		htmlResponse := render.ParseFile(galleries)
+		htmlResponse, err := render.ParseFile(galleries)
+		if err != nil {
+			return err
+		}
 
 		return c.HTML(http.StatusOK, htmlResponse)
 	})
+
+	e.Use(middleware.Logger())
 
 	e.Logger.Fatal(e.Start(":1324"))
 }

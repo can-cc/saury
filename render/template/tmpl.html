@@ -1,3 +1,4 @@
+{{ define "index" }}
 <!DOCTYPE>
 <html lang="zh">
 <head>
@@ -6,8 +7,12 @@
 </head>
 <body>
     <div>result:</div>
-    {{range .}}
-        {{.Name}}
-    {{end}}
+    <ul>
+        {{range .}}
+            <li>
+                {{.Name}}
+            </li>
+        {{end}}
+    </ul>
 </body>
 </html>
