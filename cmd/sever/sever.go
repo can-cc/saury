@@ -16,7 +16,7 @@ func main() {
 		if err != nil {
 			return err
 		}
-		galleryRepo := repository.NewGalleryRepository(appDb)
+		galleryRepo := repository.NewGalleryRepository(appDb)    // TODO 把这几行放在方法外面
 		galleries, err := galleryRepo.FindAll(20, 0)
 		if err != nil {
 			return err
