@@ -7,7 +7,7 @@ import (
 )
 
 func ParseFile(galleries []model.Album) (string, error) {
-	tmp, err := template.ParseFiles("render/template/tmpl.html")
+	tmp, err := template.ParseFiles("template/tmpl.html")
 	if err != nil {
 		return "", err
 	}
