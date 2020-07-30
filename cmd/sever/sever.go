@@ -30,7 +30,7 @@ func main() {
 		return c.HTML(http.StatusOK, htmlResponse)
 	})
 
-	e.Static("/*", "")
+	e.Static("/galleries", "galleries")
 
 	e.Use(middleware.Logger())
 
