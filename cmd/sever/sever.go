@@ -1,12 +1,14 @@
 package main
 
 import (
+	"errors"
 	"github.com/fwchen/saury/render"
 	"github.com/fwchen/saury/repository"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"log"
 	"net/http"
+	"net/url"
 )
 
 func main() {
@@ -33,18 +35,48 @@ func main() {
 		return c.HTML(http.StatusOK, htmlResponse)
 	})
 
-	e.GET("/album/:name/photo/:name", func(c echo.Context) error {
+	e.GET("/album/:albumName/photo/:photoName", func(c echo.Context) error {
 
-		values := c.ParamValues()
-		albumName := values[0]
-		photoUrl := values[1]
+		albumName := c.Param("albumName")
+		photoName := c.Param("photoName")
 
 		galleries, err := galleryRepo.FindAll(20, 0)
 		if err != nil {
 			return err
 		}
 
-		htmlResponse, err := render.ParsePhoto(galleries, albumName, photoUrl)
+		unescapeAlbumName, err := url.PathUnescape(albumName)
+		if err != nil {
+			return err
+		}
+
+		album, err := galleryRepo.FindByName(unescapeAlbumName)
+		if err != nil {
+			return err
+		}
+
+		var targetPhoto string
+		var prevPhoto string
+		var nextPhoto string
+
+		unescapePhotoName, err := url.PathUnescape(photoName)
+		if err != nil {
+			return err
+		}
+
+		for index, photo := range album.Photos {
+			if photo == unescapePhotoName {
+				targetPhoto = photoName
+				prevPhoto = album.Photos[index-1]
+				nextPhoto = album.Photos[index+1]
+				break
+			}
+		}
+		if targetPhoto == "" {
+			return errors.New("photo not found")
+		}
+
+		htmlResponse, err := render.ParsePhoto(galleries, album.Name, targetPhoto, prevPhoto, nextPhoto)
 
 		if err != nil {
 			return err

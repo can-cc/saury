@@ -18,7 +18,7 @@ func ParseIndex(galleries []model.Album) (string, error) {
 	return tpl.String(), nil
 }
 
-func ParsePhoto(galleries []model.Album, alumName string, photoName string) (string, error) {
+func ParsePhoto(galleries []model.Album, alumName string, photoName string, prevPhoto string, nextPhoto string) (string, error) {
 	tmp, err := template.ParseFiles("template/photo.html")
 	if err != nil {
 		return "", err
@@ -28,6 +28,8 @@ func ParsePhoto(galleries []model.Album, alumName string, photoName string) (str
 		"galleries": galleries,
 		"alumName":  alumName,
 		"photoName": photoName,
+		"prevPhoto": prevPhoto,
+		"nextPhoto": nextPhoto,
 	}); err != nil {
 		return "", err
 	}

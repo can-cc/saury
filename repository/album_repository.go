@@ -30,7 +30,7 @@ func (g *GalleryRepository) FindByName(name string) (*model.Album, error) {
 	var album *model.Album
 	err := g.database.MongoClient.Collection("album").FindOne(context.Background(), bson.M{
 		"name": name,
-	}).Decode(album)
+	}).Decode(&album)
 	if err != nil {
 		return nil, err
 	}
