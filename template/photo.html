@@ -30,28 +30,6 @@
     .mdui-container{
         padding: 16px 0;
     }
-    .mdui-grid-tile{
-        margin-bottom: 8px;
-    }
-    .img-container{
-        padding:4px;
-        height: 188px;
-        background-color:rgba(0,0,0,0.1);
-        border-radius: 4px;
-    }
-    .img-container>a{
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        height: 180px;
-        border-radius: 4px;
-    }
-    .img-container>a>img{
-        object-fit: contain;
-    }
-    .img-title{
-        font-size: 12px;
-    }
 </style>
 <body class="mdui-appbar-with-toolbar mdui-drawer-body-left mdui-theme-primary-pink">
 <div class="mdui-appbar mdui-appbar-fixed mdui-color-theme">
@@ -74,36 +52,18 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list">
-                {{range .}}
-                    <a href="#{{.Name}}" class="mdui-list-item mdui-ripple">{{.Name}}</a>
-                {{ end }}
+                {{with .galleries}}
+                    {{- range .}}
+                        <a href="#{{.Name}}" class="mdui-list-item mdui-ripple">{{.Name}}</a>
+                    {{- end }}
+                {{end}}
             </div>
         </li>
     </ul>
 </div>
 
 <div class="mdui-container">
-    <ul>
-        {{range $i,$value := .}}
-            <li id="{{$value.Name}}">
-                <h4>> {{$value.Name}}</h4>
-                <div class="mdui-row-xs-3 mdui-row-sm-4 mdui-row-md-6 mdui-row-lg-7 mdui-row-xl-8 mdui-grid-list">
-                    {{ range .Photos}}
-                        <div class="mdui-col">
-                            <div class="mdui-grid-tile">
-                                <div class="img-container">
-                                    <a href="javascript:;">
-                                        <img class="mdui-img-fluid" src="./galleries/{{$value.Name}}/{{.}}" height="200" alt="{{.}}">
-                                    </a>
-                                </div>
-                                <div class="img-title mdui-text-truncate">{{.}}</div>
-                            </div>
-                        </div>
-                    {{ end }}
-                </div>
-            </li>
-        {{ end }}
-    </ul>
+    <img class="mdui-img-fluid" src="/galleries/{{.alumName}}/{{.photoName}}" alt="{{.photoName}}">
 </div>
 </body>
 <script
