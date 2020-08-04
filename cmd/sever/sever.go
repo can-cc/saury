@@ -90,11 +90,16 @@ func main() {
 			return err
 		}
 
+		photosLen := len(album.Photos)
 		for index, photo := range album.Photos {
 			if photo == unescapePhotoName {
 				targetPhoto = photoName
-				prevPhoto = album.Photos[index-1]
-				nextPhoto = album.Photos[index+1]
+				if index != 0 {
+					prevPhoto = album.Photos[index-1]
+				}
+				if index != photosLen-1 {
+					nextPhoto = album.Photos[index+1]
+				}
 				break
 			}
 		}

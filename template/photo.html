@@ -17,6 +17,9 @@
         padding: 0;
         list-style: none;
     }
+    button:focus,a:focus{
+        outline-color: #fff;
+    }
     .mdui-appbar{
         color: white;
     }
@@ -48,28 +51,36 @@
         width: 100%;
         background-color: rgba(0,0,0,0.6);
     }
-    .mdui-container>.content>button{
-        height: 100%;
-        border: none;
+    .mdui-container>.content>.button-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    .mdui-container>.content>button>a{
+    .mdui-container>.content>.button-container>button{
+        margin: 0 6px;
+        height: 50px;
+        width: 50px;
+        border: none;
+        padding: 0 6px;
+        background-color: rgba(0,0,0,0.5);
+    }
+    .mdui-container>.content>.button-container>button[disabled]{
+        background-color: rgba(0,0,0,0.1)!important;
+        cursor: not-allowed !important;
+    }
+    .mdui-container>.content>.button-container>button>a{
         display: flex;
         justify-content: center;
         flex-direction: column;
         height: 100%;
         width: 100%;
+        color: white;
         text-decoration: none;
     }
     .mdui-container>.content>.img-container>img{
         object-fit: contain;
         max-height: 100%;
         max-width: 100%;
-    }
-    .prev-btn{
-        margin-right: 6px;
-    }
-    .next-btn{
-        margin-left: 6px;
     }
 </style>
 <body class="mdui-appbar-with-toolbar mdui-drawer-body-left mdui-theme-primary-pink">
@@ -108,15 +119,41 @@
 
 <div class="mdui-container">
     <div class="content">
-        <button class="prev-btn mdui-row-xs-1 mdui-row-sm-1 mdui-row-lg-2 mdui-row-xl-2">
-            <a href="/album/{{.alumName}}/photo/{{.prevPhoto}}"><i class="mdui-icon material-icons">keyboard_arrow_left</i></a>
-        </button>
+        <div class="button-container">
+            {{if eq .prevPhoto ""}}
+                <button disabled class="prev-btn mdui-btn mdui-btn-icon mdui-ripple">
+                    <a>
+                        <i class="mdui-icon material-icons">keyboard_arrow_left</i>
+                    </a>
+                </button>
+            {{else}}
+                <button class="prev-btn mdui-btn mdui-btn-icon mdui-ripple">
+                    <a href="/album/{{.alumName}}/photo/{{.prevPhoto}}">
+                        <i class="mdui-icon material-icons">keyboard_arrow_left</i>
+                    </a>
+                </button>
+            {{end}}
+        </div>
+
         <div class="img-container">
             <img class="mdui-img-fluid" src="/galleries/{{.alumName}}/{{.photoName}}" alt="{{.photoName}}">
         </div>
-        <button class="next-btn mdui-row-xs-1 mdui-row-sm-1 mdui-row-lg-2 mdui-row-xl-2">
-            <a href="/album/{{.alumName}}/photo/{{.nextPhoto}}"><i class="mdui-icon material-icons">keyboard_arrow_right</i></a>
-        </button>
+
+        <div class="button-container">
+            {{if eq .nextPhoto ""}}
+                <button disabled class="next-btn mdui-btn mdui-btn-icon mdui-ripple">
+                    <a>
+                        <i class="mdui-icon material-icons">keyboard_arrow_right</i>
+                    </a>
+                </button>
+            {{else}}
+                <button class="next-btn mdui-btn mdui-btn-icon mdui-ripple">
+                    <a href="/album/{{.alumName}}/photo/{{.nextPhoto}}">
+                        <i class="mdui-icon material-icons">keyboard_arrow_right</i>
+                    </a>
+                </button>
+            {{end}}
+        </div>
     </div>
 </div>
 </body>
