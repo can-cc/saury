@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"github.com/fwchen/saury/model"
 	"github.com/fwchen/saury/render"
 	"github.com/fwchen/saury/repository"
 	"github.com/labstack/echo/v4"
@@ -27,7 +28,33 @@ func main() {
 			return err
 		}
 
-		htmlResponse, err := render.ParseIndex(galleries)
+		htmlResponse, err := render.ParseIndex(galleries, galleries)
+		if err != nil {
+			return err
+		}
+
+		return c.HTML(http.StatusOK, htmlResponse)
+	})
+
+	e.GET("/album/:albumName", func(c echo.Context) error {
+
+		galleries, err := galleryRepo.FindAll(20, 0)
+		if err != nil {
+			return err
+		}
+
+		albumName := c.Param("albumName")
+		unescapeAlbumName, err := url.PathUnescape(albumName)
+		if err != nil {
+			return err
+		}
+
+		album, err := galleryRepo.FindByName(unescapeAlbumName)
+		if err != nil {
+			return err
+		}
+
+		htmlResponse, err := render.ParseIndex(galleries, []model.Album{*album})
 		if err != nil {
 			return err
 		}
@@ -58,7 +85,6 @@ func main() {
 		var targetPhoto string
 		var prevPhoto string
 		var nextPhoto string
-
 		unescapePhotoName, err := url.PathUnescape(photoName)
 		if err != nil {
 			return err

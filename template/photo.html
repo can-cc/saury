@@ -20,6 +20,10 @@
     .mdui-appbar{
         color: white;
     }
+    .index-title{
+        color: white;
+        text-decoration: none;
+    }
     .mdui-drawer{
         background-color: rgba(0, 0, 0,0.7);
         color: white;
@@ -74,7 +78,9 @@
         <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#drawer'}">
             <i class="mdui-icon material-icons">menu</i>
         </span>
-        <h1>Saury</h1>
+        <h1>
+            <a class="index-title" href="/">Saury</a>
+        </h1>
         <div class="mdui-toolbar-spacer"></div>
         <i class="mdui-icon material-icons">search</i>
     </div>
@@ -89,9 +95,10 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list">
+                <a href="/" class="mdui-list-item mdui-ripple">全部</a>
                 {{with .galleries}}
                     {{- range .}}
-                        <a href="#{{.Name}}" class="mdui-list-item mdui-ripple">{{.Name}}</a>
+                        <a href="/album/{{.Name}}" class="mdui-list-item mdui-ripple">{{.Name}}</a>
                     {{- end }}
                 {{end}}
             </div>

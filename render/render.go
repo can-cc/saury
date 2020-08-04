@@ -6,13 +6,16 @@ import (
 	"html/template"
 )
 
-func ParseIndex(galleries []model.Album) (string, error) {
+func ParseIndex(galleries []model.Album, currentAlbums []model.Album) (string, error) {
 	tmp, err := template.ParseFiles("template/index.html")
 	if err != nil {
 		return "", err
 	}
 	var tpl bytes.Buffer
-	if err := tmp.Execute(&tpl, galleries); err != nil {
+	if err := tmp.Execute(&tpl, map[string]interface{}{
+		"galleries":     galleries,
+		"currentAlbums": currentAlbums,
+	}); err != nil {
 		return "", err
 	}
 	return tpl.String(), nil
