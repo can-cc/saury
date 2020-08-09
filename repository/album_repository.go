@@ -5,6 +5,7 @@ import (
 	"github.com/fwchen/saury/model"
 	"github.com/juju/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -57,4 +58,36 @@ func (g *GalleryRepository) FindAll(limit, offset int64) ([]model.Album, error) 
 		albums = append(albums, album)
 	}
 	return albums, nil
+}
+
+func (g *GalleryRepository) FindPhotos(albumName string, limit int, offset int) ([]model.Photo, error) {
+
+	matchStage := bson.D{{"$match", bson.D{{"name", albumName}}}}
+	unwindStage := bson.D{{"$unwind", "$photos"}}
+	limitStage := bson.D{{"$limit", limit}}
+	skipStage := bson.D{{"$skip", offset}}
+	projectStage := bson.D{{"$project", bson.D{{"name", "$photos"}}}}
+
+	cur, err := g.database.MongoClient.Collection("album").Aggregate(context.Background(), mongo.Pipeline{matchStage, unwindStage, limitStage, skipStage, projectStage})
+	if err != nil {
+		return nil, errors.Trace(err)
+	}
+
+	photos := make([]model.Photo, 0)
+	err = cur.All(context.Background(), &photos)
+	if err != nil {
+		return nil, errors.Trace(err)
+	}
+
+	return photos, nil
+}
+
+func (g *GalleryRepository) FindPhotosCount(albumName string) (int, error) {
+	var album *model.Album
+	err := g.database.MongoClient.Collection("album").FindOne(context.Background(), bson.M{}).Decode(&album)
+	if err != nil {
+		return 0, errors.Trace(err)
+	}
+	pageCount := len(album.Photos)
+	return pageCount, nil
 }

@@ -106,7 +106,6 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list">
-                <a href="/" class="mdui-list-item mdui-ripple">全部</a>
                 {{with .galleries}}
                     {{- range .}}
                         <a href="/album/{{.Name}}" class="mdui-list-item mdui-ripple">{{.Name}}</a>

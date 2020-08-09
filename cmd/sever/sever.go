@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"github.com/fwchen/saury/model"
 	"github.com/fwchen/saury/render"
 	"github.com/fwchen/saury/repository"
 	"github.com/labstack/echo/v4"
@@ -10,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 	}
 	galleryRepo := repository.NewGalleryRepository(appDb)
 
-	e.GET("/", func(c echo.Context) error {
+	/*e.GET("/", func(c echo.Context) error {
 
 		galleries, err := galleryRepo.FindAll(20, 0)
 		if err != nil {
@@ -34,7 +34,7 @@ func main() {
 		}
 
 		return c.HTML(http.StatusOK, htmlResponse)
-	})
+	})*/
 
 	e.GET("/album/:albumName", func(c echo.Context) error {
 
@@ -49,12 +49,17 @@ func main() {
 			return err
 		}
 
-		album, err := galleryRepo.FindByName(unescapeAlbumName)
+		page, err := strconv.Atoi(c.QueryParam("page"))
+		if err != nil {
+			page = 1
+		}
+
+		photos, err := galleryRepo.FindPhotos(unescapeAlbumName, 30, (page-1)*10)
 		if err != nil {
 			return err
 		}
 
-		htmlResponse, err := render.ParseIndex(galleries, []model.Album{*album})
+		htmlResponse, err := render.ParseIndex(galleries, unescapeAlbumName, photos, page)
 		if err != nil {
 			return err
 		}

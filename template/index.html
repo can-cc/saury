@@ -1,3 +1,4 @@
+{{ define "Index" }}
 <!DOCTYPE>
 <html lang="zh">
 <head>
@@ -60,6 +61,19 @@
     .img-title{
         font-size: 12px;
     }
+    .top-menu{
+        display: flex;
+        justify-content: space-between;
+        padding:12px 0;
+    }
+    .top-menu>h4{
+        margin: 0;
+    }
+    .pagination{
+        width: 100px;
+        display: flex;
+        justify-content: space-between;
+    }
 </style>
 <body class="mdui-appbar-with-toolbar mdui-drawer-body-left mdui-theme-primary-pink">
 <div class="mdui-appbar mdui-appbar-fixed mdui-color-theme">
@@ -69,7 +83,8 @@
         </span>
         <h1>
             <a class="index-title" href="/">Saury</a>
-        </h1>        <div class="mdui-toolbar-spacer"></div>
+        </h1>
+        <div class="mdui-toolbar-spacer"></div>
         <i class="mdui-icon material-icons">search</i>
     </div>
 </div>
@@ -83,7 +98,6 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list">
-                <a href="/" class="mdui-list-item mdui-ripple">全部</a>
                 {{range .galleries}}
                     <a href="/album/{{.Name}}" class="mdui-list-item mdui-ripple">{{.Name}}</a>
                 {{ end }}
@@ -93,27 +107,37 @@
 </div>
 
 <div class="mdui-container">
-    <ul>
-        {{range $i,$value := .currentAlbums}}
-            <li id="{{$value.Name}}">
-                <h4>> {{$value.Name}}</h4>
-                <div class="mdui-row-xs-3 mdui-row-sm-4 mdui-row-md-6 mdui-row-lg-7 mdui-row-xl-8 mdui-grid-list">
-                    {{ range .Photos}}
-                        <div class="mdui-col">
-                            <div class="mdui-grid-tile">
-                                <div class="img-container">
-                                    <a href="/album/{{$value.Name}}/photo/{{.}}">
-                                        <img class="mdui-img-fluid" src="/galleries/{{$value.Name}}/{{.}}" height="200" alt="{{.}}">
-                                    </a>
-                                </div>
-                                <div class="img-title mdui-text-truncate">{{.}}</div>
-                            </div>
-                        </div>
-                    {{ end }}
+    <div class="top-menu">
+        <h4>> {{.albumName}}</h4>
+        <div class="pagination">
+            {{if eq .currentPage 1}}
+                <a disabled title="上一页"><<</a>
+            {{else}}
+               <a href="?page={{Reduce .currentPage}}" title="上一页"><<</a>
+            {{end}}
+            {{.currentPage}}
+            {{if eq .currentPage 3}}
+                <a disabled title="下一页">>></a>
+            {{else}}
+                <a href="?page={{Increase .currentPage}}" title="下一页">>></a>
+            {{end}}
+        </div>
+    </div>
+    <div class="mdui-row-xs-3 mdui-row-sm-4 mdui-row-md-6 mdui-row-lg-7 mdui-row-xl-8 mdui-grid-list">
+        {{ $albumName := .albumName }}
+        {{ range $i,$value := .photos}}
+            <div class="mdui-col">
+                <div class="mdui-grid-tile">
+                    <div class="img-container">
+                        <a href="/album/{{$albumName}}/photo/{{$value.Name}}">
+                            <img class="mdui-img-fluid" src="/galleries/{{$albumName}}/{{$value.Name}}" height="200" alt="{{$value.Name}}">
+                        </a>
+                    </div>
+                    <div class="img-title mdui-text-truncate">{{$value.Name}}</div>
                 </div>
-            </li>
+            </div>
         {{ end }}
-    </ul>
+    </div>
 </div>
 </body>
 <script
@@ -124,3 +148,4 @@
 <script>
 </script>
 </html>
+{{end}}

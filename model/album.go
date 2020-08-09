@@ -5,3 +5,7 @@ type Album struct {
 	Uri    string
 	Photos []string
 }
+
+type Photo struct {
+	Name string
+}
