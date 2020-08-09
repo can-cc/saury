@@ -6,7 +6,8 @@ import (
 	"html/template"
 )
 
-func ParseIndex(galleries []model.Album, albumName string, photos []model.Photo, currentPage int) (string, error) {
+func ParseIndex(galleries []model.Album, albumName string, photos []model.Photo, currentPage int, pageCount int) (string, error) {
+
 	tmp, err := template.New("Index").Funcs(template.FuncMap{
 		"Increase": func(num int) int {
 			return num + 1
@@ -23,6 +24,7 @@ func ParseIndex(galleries []model.Album, albumName string, photos []model.Photo,
 		"albumName":   albumName,
 		"photos":      photos,
 		"currentPage": currentPage,
+		"pageCount":   pageCount,
 	}); err != nil {
 		return "", err
 	}

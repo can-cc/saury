@@ -110,13 +110,13 @@
     <div class="top-menu">
         <h4>> {{.albumName}}</h4>
         <div class="pagination">
-            {{if eq .currentPage 1}}
+            {{if le .currentPage 1}}
                 <a disabled title="上一页"><<</a>
             {{else}}
                <a href="?page={{Reduce .currentPage}}" title="上一页"><<</a>
             {{end}}
             {{.currentPage}}
-            {{if eq .currentPage 3}}
+            {{if ge .currentPage .pageCount}}
                 <a disabled title="下一页">>></a>
             {{else}}
                 <a href="?page={{Increase .currentPage}}" title="下一页">>></a>

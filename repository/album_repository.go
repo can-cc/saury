@@ -68,7 +68,7 @@ func (g *GalleryRepository) FindPhotos(albumName string, limit int, offset int) 
 	skipStage := bson.D{{"$skip", offset}}
 	projectStage := bson.D{{"$project", bson.D{{"name", "$photos"}}}}
 
-	cur, err := g.database.MongoClient.Collection("album").Aggregate(context.Background(), mongo.Pipeline{matchStage, unwindStage, limitStage, skipStage, projectStage})
+	cur, err := g.database.MongoClient.Collection("album").Aggregate(context.Background(), mongo.Pipeline{matchStage, unwindStage, skipStage, limitStage, projectStage})
 	if err != nil {
 		return nil, errors.Trace(err)
 	}
@@ -84,7 +84,7 @@ func (g *GalleryRepository) FindPhotos(albumName string, limit int, offset int) 
 
 func (g *GalleryRepository) FindPhotosCount(albumName string) (int, error) {
 	var album *model.Album
-	err := g.database.MongoClient.Collection("album").FindOne(context.Background(), bson.M{}).Decode(&album)
+	err := g.database.MongoClient.Collection("album").FindOne(context.Background(), bson.M{"name": albumName}).Decode(&album)
 	if err != nil {
 		return 0, errors.Trace(err)
 	}

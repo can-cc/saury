@@ -7,9 +7,14 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"log"
+	"math"
 	"net/http"
 	"net/url"
 	"strconv"
+)
+
+const (
+	DEFAULT_PHOTO_LIMIT = 21
 )
 
 func main() {
@@ -54,12 +59,18 @@ func main() {
 			page = 1
 		}
 
-		photos, err := galleryRepo.FindPhotos(unescapeAlbumName, 30, (page-1)*10)
+		photos, err := galleryRepo.FindPhotos(unescapeAlbumName, DEFAULT_PHOTO_LIMIT, (page-1)*DEFAULT_PHOTO_LIMIT)
 		if err != nil {
 			return err
 		}
 
-		htmlResponse, err := render.ParseIndex(galleries, unescapeAlbumName, photos, page)
+		photosCount, err := galleryRepo.FindPhotosCount(unescapeAlbumName)
+		if err != nil {
+			return err
+		}
+
+		pageCount := int(math.Ceil(float64(photosCount) / DEFAULT_PHOTO_LIMIT))
+		htmlResponse, err := render.ParseIndex(galleries, unescapeAlbumName, photos, page, pageCount)
 		if err != nil {
 			return err
 		}
