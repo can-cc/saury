@@ -74,6 +74,12 @@
         display: flex;
         justify-content: space-between;
     }
+    .page-index{
+        text-decoration: none;
+    }
+    .page-index.active{
+        color: #e91f63;
+    }
 </style>
 <body class="mdui-appbar-with-toolbar mdui-drawer-body-left mdui-theme-primary-pink">
 <div class="mdui-appbar mdui-appbar-fixed mdui-color-theme">
@@ -115,7 +121,10 @@
             {{else}}
                <a href="?page={{Reduce .currentPage}}" title="上一页"><<</a>
             {{end}}
-            {{.currentPage}}
+            {{$currentPage := .currentPage}}
+            {{range $i,$value :=(MakeRange 1 .pageCount)}}
+                <a class="page-index {{if eq $value $currentPage}}active{{end}}" href="?page={{$value}}">{{$value}}</a>
+            {{end}}
             {{if ge .currentPage .pageCount}}
                 <a disabled title="下一页">>></a>
             {{else}}

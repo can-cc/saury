@@ -14,6 +14,13 @@ func ParseIndex(galleries []model.Album, albumName string, photos []model.Photo,
 		},
 		"Reduce": func(num int) int {
 			return num - 1
+		},
+		"MakeRange": func(min int, max int) []int {
+			a := make([]int, max-min+1)
+			for i := range a {
+				a[i] = min + i
+			}
+			return a
 		}}).ParseFiles("template/index.html")
 	if err != nil {
 		return "", err
