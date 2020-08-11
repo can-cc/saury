@@ -56,7 +56,7 @@ func ParseAlbum(galleries []model.Album, albumName string, photos []model.Photo,
 	return tpl.String(), nil
 }
 
-func ParsePhoto(galleries []model.Album, alumName string, photoName string, prevPhoto string, nextPhoto string) (string, error) {
+func ParsePhoto(galleries []model.Album, albumName string, photoName string, prevPhoto string, nextPhoto string) (string, error) {
 	tmp, err := template.ParseFiles("template/photo.html")
 	if err != nil {
 		return "", err
@@ -64,7 +64,7 @@ func ParsePhoto(galleries []model.Album, alumName string, photoName string, prev
 	var tpl bytes.Buffer
 	if err := tmp.Execute(&tpl, map[string]interface{}{
 		"galleries": galleries,
-		"alumName":  alumName,
+		"albumName": albumName,
 		"photoName": photoName,
 		"prevPhoto": prevPhoto,
 		"nextPhoto": nextPhoto,

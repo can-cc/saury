@@ -106,9 +106,10 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list">
+                {{$albumName := .albumName}}
                 {{with .galleries}}
                     {{- range .}}
-                        <a href="/album/{{.Name}}" class="mdui-list-item mdui-ripple">{{.Name}}</a>
+                        <a href="/album/{{.Name}}" class="mdui-list-item mdui-ripple {{if eq $albumName .Name}}mdui-list-item-active{{end}}">{{.Name}}</a>
                     {{- end }}
                 {{end}}
             </div>
@@ -127,7 +128,7 @@
                 </button>
             {{else}}
                 <button class="prev-btn mdui-btn mdui-btn-icon mdui-ripple">
-                    <a href="/album/{{.alumName}}/photo/{{.prevPhoto}}">
+                    <a href="/album/{{.albumName}}/photo/{{.prevPhoto}}">
                         <i class="mdui-icon material-icons">keyboard_arrow_left</i>
                     </a>
                 </button>
@@ -135,7 +136,7 @@
         </div>
 
         <div class="img-container">
-            <img class="mdui-img-fluid" src="/galleries/{{.alumName}}/{{.photoName}}" alt="{{.photoName}}">
+            <img class="mdui-img-fluid" src="/galleries/{{.albumName}}/{{.photoName}}" alt="{{.photoName}}">
         </div>
 
         <div class="button-container">
@@ -147,7 +148,7 @@
                 </button>
             {{else}}
                 <button class="next-btn mdui-btn mdui-btn-icon mdui-ripple">
-                    <a href="/album/{{.alumName}}/photo/{{.nextPhoto}}">
+                    <a href="/album/{{.albumName}}/photo/{{.nextPhoto}}">
                         <i class="mdui-icon material-icons">keyboard_arrow_right</i>
                     </a>
                 </button>

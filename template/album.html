@@ -104,8 +104,9 @@
                 <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
             </div>
             <div class="mdui-collapse-item-body mdui-list">
+                {{$albumName := .albumName}}
                 {{range .galleries}}
-                    <a href="/album/{{.Name}}" class="mdui-list-item mdui-ripple">{{.Name}}</a>
+                    <a href="/album/{{.Name}}" class="mdui-list-item mdui-ripple {{if eq $albumName .Name}}mdui-list-item-active{{end}}">{{.Name}}</a>
                 {{ end }}
             </div>
         </li>
