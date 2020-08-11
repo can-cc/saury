@@ -6,7 +6,25 @@ import (
 	"html/template"
 )
 
-func ParseIndex(galleries []model.Album, albumName string, photos []model.Photo, currentPage int, pageCount int) (string, error) {
+func ParseIndex(galleries []model.Album) (string, error) {
+	tmp, err := template.ParseFiles("template/index.html")
+	if err != nil {
+		return "", err
+	}
+
+	var tpl bytes.Buffer
+	err = tmp.Execute(&tpl, map[string]interface{}{
+		"galleries": galleries,
+	})
+	println(2)
+
+	if err != nil {
+		return "", err
+	}
+	return tpl.String(), nil
+}
+
+func ParseAlbum(galleries []model.Album, albumName string, photos []model.Photo, currentPage int, pageCount int) (string, error) {
 
 	tmp, err := template.New("Index").Funcs(template.FuncMap{
 		"Increase": func(num int) int {
@@ -21,7 +39,7 @@ func ParseIndex(galleries []model.Album, albumName string, photos []model.Photo,
 				a[i] = min + i
 			}
 			return a
-		}}).ParseFiles("template/index.html")
+		}}).ParseFiles("template/album.html")
 	if err != nil {
 		return "", err
 	}

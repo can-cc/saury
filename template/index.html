@@ -1,4 +1,3 @@
-{{ define "Index" }}
 <!DOCTYPE>
 <html lang="zh">
 <head>
@@ -32,66 +31,17 @@
     .mdui-collapse-item-header>.mdui-list-item-content{
         font-weight: 700;
     }
-    .mdui-container{
-        padding: 16px 0;
-    }
-    .mdui-grid-tile{
-        margin-bottom: 8px;
-    }
-    .img-container{
-        padding:4px;
-        height: 188px;
-        background-color:rgba(0,0,0,0.1);
-        border-radius: 4px;
-    }
-    .img-container:hover{
-        background-color:rgba(0, 0, 0,0.3);
-        transition:.5s;
-    }
-    .img-container>a{
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        border-radius: 4px;
-    }
-    .img-container>a>img{
-        object-fit: contain;
-    }
-    .img-title{
-        font-size: 12px;
-    }
-    .top-menu{
-        display: flex;
-        justify-content: space-between;
-        padding:12px 0;
-    }
-    .top-menu>h4{
-        margin: 0;
-    }
-    .pagination{
-        width: 100px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .page-index{
-        text-decoration: none;
-    }
-    .page-index.active{
-        color: #e91f63;
-    }
 </style>
 <body class="mdui-appbar-with-toolbar mdui-drawer-body-left mdui-theme-primary-pink">
 <div class="mdui-appbar mdui-appbar-fixed mdui-color-theme">
     <div class="mdui-toolbar">
-        <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#drawer'}">
-            <i class="mdui-icon material-icons">menu</i>
-        </span>
+    <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#drawer'}">
+        <i class="mdui-icon material-icons">menu</i>
+    </span>
         <h1>
             <a class="index-title" href="/">Saury</a>
         </h1>
         <div class="mdui-toolbar-spacer"></div>
-        <i class="mdui-icon material-icons">search</i>
     </div>
 </div>
 
@@ -113,40 +63,6 @@
 </div>
 
 <div class="mdui-container">
-    <div class="top-menu">
-        <h4>> {{.albumName}}</h4>
-        <div class="pagination">
-            {{if le .currentPage 1}}
-                <a disabled title="上一页"><<</a>
-            {{else}}
-               <a href="?page={{Reduce .currentPage}}" title="上一页"><<</a>
-            {{end}}
-            {{$currentPage := .currentPage}}
-            {{range $i,$value :=(MakeRange 1 .pageCount)}}
-                <a class="page-index {{if eq $value $currentPage}}active{{end}}" href="?page={{$value}}">{{$value}}</a>
-            {{end}}
-            {{if ge .currentPage .pageCount}}
-                <a disabled title="下一页">>></a>
-            {{else}}
-                <a href="?page={{Increase .currentPage}}" title="下一页">>></a>
-            {{end}}
-        </div>
-    </div>
-    <div class="mdui-row-xs-3 mdui-row-sm-4 mdui-row-md-6 mdui-row-lg-7 mdui-row-xl-8 mdui-grid-list">
-        {{ $albumName := .albumName }}
-        {{ range $i,$value := .photos}}
-            <div class="mdui-col">
-                <div class="mdui-grid-tile">
-                    <div class="img-container">
-                        <a href="/album/{{$albumName}}/photo/{{$value.Name}}">
-                            <img class="mdui-img-fluid" src="/galleries/{{$albumName}}/{{$value.Name}}" height="200" alt="{{$value.Name}}">
-                        </a>
-                    </div>
-                    <div class="img-title mdui-text-truncate">{{$value.Name}}</div>
-                </div>
-            </div>
-        {{ end }}
-    </div>
 </div>
 </body>
 <script
@@ -157,4 +73,3 @@
 <script>
 </script>
 </html>
-{{end}}

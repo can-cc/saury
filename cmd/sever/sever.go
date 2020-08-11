@@ -26,20 +26,20 @@ func main() {
 	}
 	galleryRepo := repository.NewGalleryRepository(appDb)
 
-	/*e.GET("/", func(c echo.Context) error {
+	e.GET("/", func(c echo.Context) error {
 
 		galleries, err := galleryRepo.FindAll(20, 0)
 		if err != nil {
 			return err
 		}
 
-		htmlResponse, err := render.ParseIndex(galleries, galleries)
+		htmlResponse, err := render.ParseIndex(galleries)
 		if err != nil {
 			return err
 		}
 
 		return c.HTML(http.StatusOK, htmlResponse)
-	})*/
+	})
 
 	e.GET("/album/:albumName", func(c echo.Context) error {
 
@@ -70,7 +70,7 @@ func main() {
 		}
 
 		pageCount := int(math.Ceil(float64(photosCount) / DEFAULT_PHOTO_LIMIT))
-		htmlResponse, err := render.ParseIndex(galleries, unescapeAlbumName, photos, page, pageCount)
+		htmlResponse, err := render.ParseAlbum(galleries, unescapeAlbumName, photos, page, pageCount)
 		if err != nil {
 			return err
 		}
